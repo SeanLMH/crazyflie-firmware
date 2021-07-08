@@ -31,6 +31,7 @@
 void powerDistributionInit(void);
 bool powerDistributionTest(void);
 void powerDistribution(const control_t *control);
+void directDistribution(const setpoint_t *setpoint);
 void powerStop();
 
 

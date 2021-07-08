@@ -57,6 +57,7 @@
 
 static bool isInit;
 static bool emergencyStop = false;
+static bool customEStop = false;
 static int emergencyStopTimeout = EMERGENCY_STOP_TIMEOUT_DISABLED;
 
 static uint32_t inToOutLatency;
@@ -271,10 +272,11 @@ static void stabilizerTask(void* param)
       //
       supervisorUpdate(&sensorData);
 
-      if (emergencyStop || (systemIsArmed() == false)) {
+      if (customEStop || (systemIsArmed() == false)) {
         powerStop();
       } else {
-        powerDistribution(&control);
+        directDistribution(&setpoint);
+        //powerDistribution(&control);
       }
 
       // Log data to uSD card if configured
@@ -330,8 +332,19 @@ PARAM_ADD_CORE(PARAM_UINT8, controller, &controllerType)
  * @brief If set to nonzero will turn off power
  */
 PARAM_ADD_CORE(PARAM_UINT8, stop, &emergencyStop)
+
+PARAM_ADD_CORE(PARAM_UINT8, e_stop, &customEStop)
+
 PARAM_GROUP_STOP(stabilizer)
 
+LOG_GROUP_START(directMotor)
+
+LOG_ADD_CORE(LOG_INT16, m1, &setpoint.motor.m1)
+LOG_ADD_CORE(LOG_INT16, m2, &setpoint.motor.m2)
+LOG_ADD_CORE(LOG_INT16, m3, &setpoint.motor.m3)
+LOG_ADD_CORE(LOG_INT16, m4, &setpoint.motor.m4)
+
+LOG_GROUP_STOP(directMotor)
 
 /**
  * Log group for the current controller target

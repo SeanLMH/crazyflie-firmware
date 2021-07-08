@@ -130,6 +130,18 @@ void powerDistribution(const control_t *control)
   }
 }
 
+void directDistribution(const setpoint_t *setpoint)
+{
+  motorPower.m1 = setpoint->motor.m1;
+  motorPower.m2 = setpoint->motor.m2;
+  motorPower.m3 = setpoint->motor.m3;
+  motorPower.m4 = setpoint->motor.m4;
+  motorsSetRatio(MOTOR_M1, motorPower.m1);
+  motorsSetRatio(MOTOR_M2, motorPower.m2);
+  motorsSetRatio(MOTOR_M3, motorPower.m3);
+  motorsSetRatio(MOTOR_M4, motorPower.m4);
+}
+
 /**
  * Override power distribution to motors.
  */

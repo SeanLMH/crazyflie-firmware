@@ -180,6 +180,13 @@ typedef enum mode_e {
   modeVelocity
 } stab_mode_t;
 
+typedef struct motor_s {
+  uint16_t m1;
+  uint16_t m2;
+  uint16_t m3;
+  uint16_t m4;
+} motor_t;
+
 typedef struct setpoint_s {
   uint32_t timestamp;
 
@@ -191,6 +198,7 @@ typedef struct setpoint_s {
   velocity_t velocity;      // m/s
   acc_t acceleration;       // m/s^2
   bool velocity_body;       // true if velocity is given in body frame; false if velocity is given in world frame
+  motor_t motor;
 
   struct {
     stab_mode_t x;
